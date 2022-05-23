@@ -327,8 +327,8 @@ class myDAFasterRCNN(LightningModule):
       elif total_gt > 0 and total_pred == 0:
           return torch.tensor(0.).cuda()
           
-tr_dataset = WheatDataset('./datasets/Annots/official_train.csv', root_dir='./datasets/gwhd_2021/images/', image_set = 'train', transform=train_transform)
-vl_dataset = WheatDataset('./datasets/Annots/official_val.csv', root_dir='./datasets/gwhd_2021/images/', image_set = 'val', transform=valid_transform)
+tr_dataset = WheatDataset('../datasets/gwhd_2021/Annotation/competition_train.csv', root_dir='../datasets/gwhd_2021/images/', image_set = 'train', transform=train_transform)
+vl_dataset = WheatDataset('../datasets/gwhd_2021/Annotation/competition_val.csv', root_dir='../datasets/gwhd_2021/images/', image_set = 'val', transform=valid_transform)
 val_dataloader = torch.utils.data.DataLoader(vl_dataset, batch_size=1, shuffle=False,  collate_fn=collate_fn, num_workers=4)
 
            
@@ -355,7 +355,7 @@ trainer.fit(detector, val_dataloaders=val_dataloader)
 
 detector.load_state_dict(torch.load(NET_FOLDER+'/'+weights_file+'.ckpt')['state_dict'])
 detector.freeze()
-test_dataset = WheatDataset('./datasets/Annots/official_test.csv', root_dir='./datasets/gwhd_2021/images/', image_set = 'test', transform=valid_transform)
+test_dataset = WheatDataset('../datasets/gwhd_2021/Annotation/competition_test.csv', root_dir='../datasets/gwhd_2021/images/', image_set = 'test', transform=valid_transform)
 
 detector.detector.eval()
 test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, shuffle=False, collate_fn=collate_fn, num_workers=4)
